@@ -16,6 +16,8 @@ namespace HenkesUtils {
 
             if(streams.Count() == 0) throw new ArgumentException();
 
+            baseStreams = new List<StreamInfo>(streams.Count);
+
             long offset = 0;
 
             foreach(Stream stream in streams) {
@@ -55,7 +57,24 @@ namespace HenkesUtils {
 
             int bytesRead = 0;
             foreach(StreamInfo streamInfo in baseStreams) {
+                long localStart = currentPosition - streamInfo.offset;
+                if(localStart < 0) continue;
+                if(localStart > streamInfo.length) continue;
+
+                long localEnd = localStart + count;
+                if(localEnd > streamInfo.length) {
+                    localEnd = streamInfo.length;
+                }
+                int readCount = (int)(localEnd - localStart);
+
+                streamInfo.stream.Seek(localStart, SeekOrigin.Begin);
+
+                int localBufferWriteOffset = bufferWriteOffset + ;
+
+                bytesRead += streamInfo.stream.Read(buffer, localBufferWriteOffset, readCount);
             }
+
+            currentPosition += bytesRead;
 
             return bytesRead;
         }
