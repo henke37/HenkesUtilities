@@ -69,7 +69,7 @@ namespace HenkesUtils {
 
                 streamInfo.stream.Seek(localStart, SeekOrigin.Begin);
 
-                int localBufferWriteOffset = bufferWriteOffset + ;
+                int localBufferWriteOffset = bufferWriteOffset + bytesRead;
 
                 bytesRead += streamInfo.stream.Read(buffer, localBufferWriteOffset, readCount);
             }
