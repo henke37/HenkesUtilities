@@ -80,7 +80,16 @@ namespace HenkesUtils {
         }
 
         public override long Seek(long offset, SeekOrigin origin) {
-            throw new NotImplementedException();
+            switch(origin) {
+                case SeekOrigin.Begin:
+                    return currentPosition = offset;
+                case SeekOrigin.Current:
+                    return currentPosition += offset;
+                case SeekOrigin.End:
+                    return currentPosition = Length + offset;
+                default:
+                    throw new ArgumentException();
+            }
         }
 
         public override void SetLength(long value) {
