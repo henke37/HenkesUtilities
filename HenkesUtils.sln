@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HenkesUtils", "HenkesUtils\HenkesUtils.csproj", "{95829EB3-7D03-4D94-A1DD-1F12313E374D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95829EB3-7D03-4D94-A1DD-1F12313E374D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95829EB3-7D03-4D94-A1DD-1F12313E374D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95829EB3-7D03-4D94-A1DD-1F12313E374D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95829EB3-7D03-4D94-A1DD-1F12313E374D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F42D1FAB-A5FF-4793-A91C-903B20B37E9C}
+	EndGlobalSection
+EndGlobal
