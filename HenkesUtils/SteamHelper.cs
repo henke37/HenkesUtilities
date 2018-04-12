@@ -42,7 +42,7 @@ namespace HenkesUtils {
             return Regex.Replace(v, @"\\\\", @"\");
         }
 
-        internal static string GetInstallPathForApp(int appId) {
+        public static string GetInstallPathForApp(int appId) {
             foreach(var libraryFolder in libraryFolders) {
                 try {
                     KVObject manifest = parseKVFile($@"{libraryFolder}\steamapps\appmanifest_{appId}.acf");
