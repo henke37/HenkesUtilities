@@ -18,7 +18,7 @@ namespace HenkesUtils {
             libraryFolders = FindLibraries();
         }
 
-        static dynamic FindLibraries() {
+        static List<string> FindLibraries() {
             var steamKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Valve\Steam");
             string steamInstallPath = (string)steamKey.GetValue("InstallPath");
 
