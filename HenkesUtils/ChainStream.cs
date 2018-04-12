@@ -30,6 +30,17 @@ namespace HenkesUtils {
             }
         }
 
+        public void Add(Stream newStream) {
+            if(!newStream.CanRead) throw new ArgumentException();
+            if(!newStream.CanSeek) throw new ArgumentException();
+
+            var prevInfo = baseStreams[baseStreams.Count - 1];
+            long newOffset = prevInfo.offset + prevInfo.length;
+
+            var newInfo = new StreamInfo(newStream, newOffset);
+            baseStreams.Add(newInfo);
+        }
+
         public override bool CanRead => true;
 
         public override bool CanSeek => true;
