@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HenkesUtils {
-    class SubStream : Stream {
+    public class SubStream : Stream {
         private Stream stream;
 
         public long offset;

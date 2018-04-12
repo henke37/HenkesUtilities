@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HenkesUtils {
-    class ChainStream : Stream {
+    public class ChainStream : Stream {
 
         private List<StreamInfo> baseStreams;
         private long currentPosition;
