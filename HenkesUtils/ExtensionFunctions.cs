@@ -7,6 +7,40 @@ using System.Threading.Tasks;
 
 namespace HenkesUtils {
     public static class ExtensionFunctions {
+
+
+        public static List<Int32> ReadInt32Array(this BinaryReader r, int count) {
+            var l = new List<Int32>(count);
+            for(var i=0;i<count;++i) {
+                l.Add(r.ReadInt32());
+            }
+            return l;
+        }
+
+        public static List<Int16> ReadInt16Array(this BinaryReader r, int count) {
+            var l = new List<Int16>(count);
+            for(var i = 0; i < count; ++i) {
+                l.Add(r.ReadInt16());
+            }
+            return l;
+        }
+
+        public static List<UInt32> ReadUInt32Array(this BinaryReader r, int count) {
+            var l = new List<UInt32>(count);
+            for(var i = 0; i < count; ++i) {
+                l.Add(r.ReadUInt32());
+            }
+            return l;
+        }
+
+        public static List<UInt16> ReadUInt16Array(this BinaryReader r, int count) {
+            var l = new List<UInt16>(count);
+            for(var i = 0; i < count; ++i) {
+                l.Add(r.ReadUInt16());
+            }
+            return l;
+        }
+
         public static string Read4C(this BinaryReader r) {
             return new string(r.ReadChars(4));
         }

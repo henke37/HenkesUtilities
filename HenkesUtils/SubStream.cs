@@ -15,19 +15,37 @@ namespace HenkesUtils {
         private long currentPosition;
 
         public SubStream(SubStream baseSub, long offset, long limit = long.MaxValue) {
+            if(offset < 0) throw new ArgumentOutOfRangeException("The offset can't be negative!", nameof(offset));
+            this.offset = offset;
+            if(limit < 0) throw new ArgumentOutOfRangeException("The limit can't be negative!", nameof(limit));
+            this.limit = limit;
+
+            FromBaseSubStream(baseSub, offset, limit);
+        }
+
+        private void FromBaseSubStream(SubStream baseSub, long offset, long limit) {
             this.stream = baseSub.stream;
             this.offset = baseSub.offset + offset;
             this.limit = (limit < baseSub.limit ? limit : baseSub.limit);
         }
 
         public SubStream(Stream stream, long offset, long limit = long.MaxValue) {
-            this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
-            if(!stream.CanSeek) throw new ArgumentException("The stream must be seekable!", nameof(stream));
-
             if(offset < 0) throw new ArgumentOutOfRangeException("The offset can't be negative!", nameof(offset));
             this.offset = offset;
             if(limit < 0) throw new ArgumentOutOfRangeException("The limit can't be negative!", nameof(limit));
             this.limit = limit;
+
+            {
+                var baseSub = stream as SubStream;
+                if(baseSub != null) {
+                    FromBaseSubStream(baseSub, offset, limit);
+                    return;
+                }
+            }
+            this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
+            if(!stream.CanSeek) throw new ArgumentException("The stream must be seekable!", nameof(stream));
+
+
         }
 
         public override bool CanRead => stream.CanRead;
