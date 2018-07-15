@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 namespace HenkesUtils {
     public static class ExtensionFunctions {
 
+        public static bool TrySet<TKey,TValue>(this Dictionary<TKey,TValue> d, TKey Key, TValue Value) {
+            if(d.ContainsKey(Key)) return false;
+            d[Key] = Value;
+            return true;
+        }
 
         public static List<Int32> ReadInt32Array(this BinaryReader r, int count) {
             var l = new List<Int32>(count);
@@ -45,9 +50,9 @@ namespace HenkesUtils {
             return new string(r.ReadChars(4));
         }
 
-        public static string ReadUTFString(this BinaryReader r, int bytesToRead) {
+        public static string ReadUTFString(this BinaryReader r, int bytesToRead, bool terminated=true) {
             var ba = r.ReadBytes(bytesToRead);
-            return new String(Encoding.UTF8.GetChars(ba, 0, bytesToRead - 1));
+            return new String(Encoding.UTF8.GetChars(ba, 0, bytesToRead - (terminated?1:0)));
         }
 
         public static string ReadAsUTF8(this Stream s) {
@@ -60,12 +65,12 @@ namespace HenkesUtils {
             r.BaseStream.Seek(bytesToSkip, SeekOrigin.Current);
         }
 
-        public static void Seek(this BinaryReader r, int bytesToSkip) {
-            r.BaseStream.Seek(bytesToSkip, SeekOrigin.Begin);
+        public static void Seek(this BinaryReader r, int offset) {
+            r.BaseStream.Seek(offset, SeekOrigin.Begin);
         }
 
-        public static void Seek(this BinaryReader r, int bytesToSkip, SeekOrigin seekOrigin) {
-            r.BaseStream.Seek(bytesToSkip, seekOrigin);
+        public static void Seek(this BinaryReader r, int offset, SeekOrigin seekOrigin) {
+            r.BaseStream.Seek(offset, seekOrigin);
         }
 
         public static void WriteLenPrefixedUTFString(this BinaryWriter w, string str) {
@@ -87,5 +92,13 @@ namespace HenkesUtils {
             }
             return new string(Encoding.UTF8.GetChars(l.ToArray()));
         }
-    }
+
+		public static uint Read3ByteUInt(this BinaryReader r) {
+			uint value = r.ReadByte();
+
+			value += (uint)(r.ReadUInt16() << 8);
+
+			return value;
+		}
+	}
 }
