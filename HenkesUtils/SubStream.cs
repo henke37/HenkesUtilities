@@ -50,8 +50,10 @@ namespace HenkesUtils {
 
 		public SubStream(BinaryReader r, long limit=long.MaxValue) : this(r.BaseStream, r.BaseStream.Position, limit) {
 		}
+		public SubStream(BinaryWriter w, long limit = long.MaxValue) : this(w.BaseStream, w.BaseStream.Position, limit) {
+		}
 
-        public override bool CanRead => stream.CanRead;
+		public override bool CanRead => stream.CanRead;
         public override bool CanSeek => true;
         public override bool CanWrite => stream.CanWrite;
         public override bool CanTimeout => stream.CanTimeout;
