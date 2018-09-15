@@ -30,9 +30,9 @@ namespace HenkesUtils {
         }
 
         public SubStream(Stream stream, long offset, long limit = long.MaxValue) {
-            if(offset < 0) throw new ArgumentOutOfRangeException("The offset can't be negative!", nameof(offset));
+            if(offset < 0) throw new ArgumentOutOfRangeException(nameof(offset), "The offset can't be negative!");
             this.offset = offset;
-            if(limit < 0) throw new ArgumentOutOfRangeException("The limit can't be negative!", nameof(limit));
+            if(limit < 0) throw new ArgumentOutOfRangeException(nameof(limit), "The limit can't be negative!");
             this.limit = limit;
 
             {
@@ -74,7 +74,7 @@ namespace HenkesUtils {
             if(buffer == null) throw new ArgumentNullException(nameof(buffer));
             if(bufferWriteOffset < 0) throw new ArgumentOutOfRangeException(nameof(bufferWriteOffset));
             if(count < 0) throw new ArgumentOutOfRangeException(nameof(count));
-            if(bufferWriteOffset + count > buffer.Length) throw new ArgumentException();
+            if(bufferWriteOffset + count > buffer.Length) throw new ArgumentException("Invalid range in buffer specified");
 
             stream.Seek(currentPosition + offset, SeekOrigin.Begin);
             int bytesToRead = count;
@@ -89,8 +89,9 @@ namespace HenkesUtils {
 			if(buffer == null) throw new ArgumentNullException(nameof(buffer));
 			if(count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 			if(bufferReadOffset < 0) throw new ArgumentOutOfRangeException(nameof(bufferReadOffset));
+			if(bufferReadOffset + count > buffer.Length) throw new ArgumentException("Invalid range in buffer specified");
 
-			if(count + currentPosition > Length) throw new ArgumentOutOfRangeException();
+			if(count + currentPosition > Length) throw new ArgumentException("Attempt to write past the SubStream limit");
 
 			stream.Seek(currentPosition + offset, SeekOrigin.Begin);
 			int bytesToWrite = count;
