@@ -53,7 +53,7 @@ namespace HenkesUtils {
 
         public override bool CanRead => stream.CanRead;
         public override bool CanSeek => true;
-        public override bool CanWrite => false;
+        public override bool CanWrite => stream.CanWrite;
         public override bool CanTimeout => stream.CanTimeout;
 
         public override long Length {
@@ -72,8 +72,8 @@ namespace HenkesUtils {
 
         public override int Read(byte[] buffer, int bufferWriteOffset, int count) {
             if(buffer == null) throw new ArgumentNullException(nameof(buffer));
-            if(bufferWriteOffset < 0) throw new ArgumentException();
-            if(count < 0) throw new ArgumentException();
+            if(bufferWriteOffset < 0) throw new ArgumentOutOfRangeException(nameof(bufferWriteOffset));
+            if(count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if(bufferWriteOffset + count > buffer.Length) throw new ArgumentException();
 
             stream.Seek(currentPosition + offset, SeekOrigin.Begin);
@@ -85,7 +85,21 @@ namespace HenkesUtils {
             return bytesRead;
         }
 
-        public override long Seek(long offset, SeekOrigin origin) {
+		public override void Write(byte[] buffer, int bufferReadOffset, int count) {
+			if(buffer == null) throw new ArgumentNullException(nameof(buffer));
+			if(count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+			if(bufferReadOffset < 0) throw new ArgumentOutOfRangeException(nameof(bufferReadOffset));
+
+			if(count + currentPosition > Length) throw new ArgumentOutOfRangeException();
+
+			stream.Seek(currentPosition + offset, SeekOrigin.Begin);
+			int bytesToWrite = count;
+
+			stream.Write(buffer, bufferReadOffset, bytesToWrite);
+			currentPosition += bytesToWrite;
+		}
+
+		public override long Seek(long offset, SeekOrigin origin) {
             switch(origin) {
                 case SeekOrigin.Begin:
                     return currentPosition = offset;
@@ -99,10 +113,6 @@ namespace HenkesUtils {
         }
 
         public override void SetLength(long value) {
-            throw new NotSupportedException();
-        }
-
-        public override void Write(byte[] buffer, int offset, int count) {
             throw new NotSupportedException();
         }
 
