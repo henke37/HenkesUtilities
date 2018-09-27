@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HenkesUtils {
 	public class SubStream : Stream {
@@ -44,8 +40,6 @@ namespace HenkesUtils {
 			}
 			this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
 			if(!stream.CanSeek) throw new ArgumentException("The stream must be seekable!", nameof(stream));
-
-
 		}
 
 		public SubStream(BinaryReader r, long limit = long.MaxValue) : this(r.BaseStream, r.BaseStream.Position, limit) {
@@ -96,7 +90,6 @@ namespace HenkesUtils {
 			int v=stream.ReadByte();
 			if(v != -1) currentPosition++;
 			return v;
-
 		}
 
 		public override void Write(byte[] buffer, int bufferReadOffset, int count) {
