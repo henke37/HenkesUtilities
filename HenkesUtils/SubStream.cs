@@ -68,6 +68,8 @@ namespace HenkesUtils {
 
 		public override long Position { set => currentPosition = value; get => currentPosition; }
 
+		public long BytesAvailable { get => Length - currentPosition; }
+
 		public override void Flush() {
 			stream.Flush();
 		}
@@ -80,11 +82,21 @@ namespace HenkesUtils {
 
 			stream.Seek(currentPosition + offset, SeekOrigin.Begin);
 			int bytesToRead = count;
-			if(bytesToRead > Length) bytesToRead = (int)Length;
+			if(bytesToRead > BytesAvailable) bytesToRead = (int)BytesAvailable;
 			int bytesRead = stream.Read(buffer, bufferWriteOffset, bytesToRead);
 			currentPosition += bytesRead;
 
 			return bytesRead;
+		}
+
+		public override int ReadByte() {
+			if(BytesAvailable < 0) return -1;
+			stream.Seek(currentPosition + offset, SeekOrigin.Begin);
+
+			int v=stream.ReadByte();
+			if(v != -1) currentPosition++;
+			return v;
+
 		}
 
 		public override void Write(byte[] buffer, int bufferReadOffset, int count) {
@@ -100,6 +112,13 @@ namespace HenkesUtils {
 
 			stream.Write(buffer, bufferReadOffset, bytesToWrite);
 			currentPosition += bytesToWrite;
+		}
+
+		public override void WriteByte(byte value) {
+			if(BytesAvailable < 0) throw new ArgumentException("Attempt to write past the SubStream limit");
+			stream.Seek(currentPosition + offset, SeekOrigin.Begin);
+			base.WriteByte(value);
+			currentPosition++;
 		}
 
 		public override long Seek(long offset, SeekOrigin origin) {
