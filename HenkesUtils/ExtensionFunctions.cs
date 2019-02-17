@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HenkesUtils {
     public static class ExtensionFunctions {
@@ -60,6 +58,12 @@ namespace HenkesUtils {
             s.Read(ba, 0, (int)s.Length);
             return new string(Encoding.UTF8.GetChars(ba));
         }
+
+		public static SubStream ReadSubStream(this BinaryReader r, int bytesToRead) {
+			var ss = new SubStream(r.BaseStream, r.BaseStream.Position, bytesToRead);
+			r.Skip(bytesToRead);
+			return ss;
+		}
 
         public static void Skip(this BinaryReader r, int bytesToSkip) {
             r.BaseStream.Seek(bytesToSkip, SeekOrigin.Current);
