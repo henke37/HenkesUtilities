@@ -22,7 +22,8 @@ namespace HenkesUtils {
 		private void FromBaseSubStream(SubStream baseSub, long offset, long limit) {
 			this.stream = baseSub.stream;
 			this.offset = baseSub.offset + offset;
-			this.limit = (limit < baseSub.limit ? limit : baseSub.limit);
+			var baseLimit = baseSub.limit-offset;
+			this.limit = (limit < baseLimit ? limit : baseLimit);
 		}
 
 		public SubStream(Stream stream, long offset, long limit = long.MaxValue) {
