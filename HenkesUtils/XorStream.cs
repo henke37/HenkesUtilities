@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace HenkesUtils {
+namespace Henke37.IOUtils {
 	public class XorStream : Stream {
 
 		private Stream dataStream;

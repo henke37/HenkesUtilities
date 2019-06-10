@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HenkesUtils {
+namespace Henke37.IOUtils {
     public class ChainStream : Stream {
 
         private List<StreamInfo> baseStreams;

@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<ProjectGuid>{95829EB3-7D03-4D94-A1DD-1F12313E374D}</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>Henke37.IOUtils</RootNamespace>
+		<AssemblyName>HenkesUtils</AssemblyName>
+		<TargetFrameworks>net452;netstandard20</TargetFrameworks>
+		<FileAlignment>512</FileAlignment>
+		<Authors>Henke37</Authors>
+		<NeutralLanguage>en</NeutralLanguage>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Description />
+		<PackageId>Henke37.IOUtils</PackageId>
+		<Product>IOUtils</Product>
+	</PropertyGroup>
+</Project>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace HenkesUtils {
+namespace Henke37.IOUtils {
 	public class SubStream : Stream {
 		private Stream stream;
 

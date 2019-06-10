@@ -10,7 +10,7 @@ using Microsoft.Win32;
 using ValveKeyValue;
 
 namespace HenkesUtils.Steam {
-    class SteamHelper {
+    public class SteamHelper {
 
         static readonly List<string> libraryFolders;
 

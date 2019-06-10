@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace HenkesUtils {
+namespace Henke37.IOUtils {
     public static class ExtensionFunctions {
 
         public static bool TrySet<TKey,TValue>(this Dictionary<TKey,TValue> d, TKey Key, TValue Value) {
