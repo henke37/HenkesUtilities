@@ -7,8 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Win32;
-using ValveKeyValue;
-
+//using ValveKeyValue;
+/*
 namespace HenkesUtils.Steam {
     public class SteamHelper {
 
@@ -65,3 +65,4 @@ namespace HenkesUtils.Steam {
         }
     }
 }
+*/
