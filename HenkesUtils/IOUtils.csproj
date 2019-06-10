@@ -14,5 +14,7 @@
 		<Description />
 		<PackageId>Henke37.IOUtils</PackageId>
 		<Product>IOUtils</Product>
+		<RepositoryUrl>https://github.com/henke37/HenkesUtilities</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 </Project>
