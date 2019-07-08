@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Win32;
-using KVLib;
+using ValveKeyValue;
 
 namespace Henke37.Valve.Steam {
     public class SteamHelper {
@@ -29,10 +29,10 @@ namespace Henke37.Valve.Steam {
             var kv = parseKVFile($@"{steamInstallPath}\steamapps\libraryfolders.vdf");
 
             
-            foreach(var folderKv in kv.Children) {
-                if(!int.TryParse(folderKv.Key,out int libraryIndex)) continue;
-				string folder = fixSlashes(folderKv.GetString());
-				libraries.Add(folder);
+            for(uint libraryId = 1; ; ++libraryId) {
+                var folder = kv[libraryId.ToString()];
+                if(folder == null) break;
+                libraries.Add(fixSlashes(folder.ToString()));
             }
 
             return libraries;
@@ -45,8 +45,8 @@ namespace Henke37.Valve.Steam {
         public static string GetInstallPathForApp(int appId) {
             foreach(var libraryFolder in libraryFolders) {
                 try {
-                    var manifest = parseKVFile($@"{libraryFolder}\steamapps\appmanifest_{appId}.acf");
-                    string installDir = fixSlashes(manifest["installdir"].GetString());
+                    KVObject manifest = parseKVFile($@"{libraryFolder}\steamapps\appmanifest_{appId}.acf");
+                    string installDir = fixSlashes(manifest["installdir"].ToString());
                     return $@"{libraryFolder}\steamapps\common\{installDir}";
                 } catch(FileNotFoundException) {
                     continue;
@@ -55,10 +55,13 @@ namespace Henke37.Valve.Steam {
             throw new KeyNotFoundException();
         }
 
-        private static KeyValue parseKVFile(string filename) {
-			var kvs=KVLib.KVParser.ParseAllKVRootNodes(File.ReadAllText(filename));
+        private static KVObject parseKVFile(string filename) {
+            return parseKVStream(File.OpenRead(filename));
+        }
 
-			return kvs[0];
+        private static KVObject parseKVStream(Stream s) {
+            var decoder = KVSerializer.Create(KVSerializationFormat.KeyValues1Text);
+            return decoder.Deserialize(s);
         }
     }
 }
