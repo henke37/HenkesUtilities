@@ -14,7 +14,7 @@
 		<Description>Utility class for interacting with Steam.</Description>
 		<RepositoryUrl>https://github.com/henke37/HenkesUtilities</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 		<Product>Henke37.Valve.Steam</Product>
 		<PackageId>Henke37.Valve.Steam</PackageId>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
