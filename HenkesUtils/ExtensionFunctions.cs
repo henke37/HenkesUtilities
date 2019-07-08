@@ -65,7 +65,11 @@ namespace Henke37.IOUtils {
 			return ss;
 		}
 
-        public static void Skip(this BinaryReader r, int bytesToSkip) {
+		static public byte[] ReadRemainingBytes(this BinaryReader r) {
+			return r.ReadBytes((int)r.BytesLeft());
+		}
+
+		public static void Skip(this BinaryReader r, int bytesToSkip) {
             r.BaseStream.Seek(bytesToSkip, SeekOrigin.Current);
         }
 

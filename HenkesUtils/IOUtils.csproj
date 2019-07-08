@@ -4,17 +4,18 @@
 		<OutputType>Library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>Henke37.IOUtils</RootNamespace>
-		<AssemblyName>HenkesUtils</AssemblyName>
+		<AssemblyName>Henke37.IOUtils</AssemblyName>
 		<TargetFrameworks>net452;netstandard20</TargetFrameworks>
 		<FileAlignment>512</FileAlignment>
 		<Authors>Henke37</Authors>
 		<NeutralLanguage>en</NeutralLanguage>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Description />
+		<Description>Utilities for enhancing IO.</Description>
 		<PackageId>Henke37.IOUtils</PackageId>
 		<Product>IOUtils</Product>
 		<RepositoryUrl>https://github.com/henke37/HenkesUtilities</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
+		<Version>1.1.0</Version>
 	</PropertyGroup>
 </Project>
