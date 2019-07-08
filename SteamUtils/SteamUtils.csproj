@@ -3,8 +3,8 @@
 		<ProjectGuid>{E5DA736A-B101-4BD0-B286-5D93AAC78BE2}</ProjectGuid>
 		<OutputType>Library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>Henke37.SteamUtils</RootNamespace>
-		<AssemblyName>Henke37.SteamUtils</AssemblyName>
+		<RootNamespace>HenkesUtils.Valve.Steam</RootNamespace>
+		<AssemblyName>HenkesUtils.Valve.Steam</AssemblyName>
 		<TargetFramework>netstandard20</TargetFramework>
 		<FileAlignment>512</FileAlignment>
 		<Authors>Henke37</Authors>
@@ -16,6 +16,7 @@
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Win32.Registry" Version="4.5.0" />
 		<PackageReference Include="ValveKeyValue" Version="0.2.1.107" />
 	</ItemGroup>
 </Project>

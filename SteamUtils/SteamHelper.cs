@@ -7,9 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Win32;
-//using ValveKeyValue;
-/*
-namespace HenkesUtils.Steam {
+using ValveKeyValue;
+
+namespace HenkesUtils.Valve.Steam {
     public class SteamHelper {
 
         static readonly List<string> libraryFolders;
@@ -65,4 +65,3 @@ namespace HenkesUtils.Steam {
         }
     }
 }
-*/
