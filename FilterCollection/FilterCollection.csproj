@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+		<OutputType>Library</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>Henke37.Collections.Filtered</RootNamespace>
+		<AssemblyName>Henke37.Collections.Filtered</AssemblyName>
+		<TargetFrameworks>net452;netstandard20</TargetFrameworks>
+		<Authors>Henke37</Authors>
+		<NeutralLanguage>en</NeutralLanguage>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Description>Pseudo collection that filters an existing collection.</Description>
+		<PackageId>Henke37.Collections.Filtered</PackageId>
+		<Product>FilterCollections</Product>
+		<RepositoryUrl>https://github.com/henke37/HenkesUtilities</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<Version>1.0.0</Version>
+  </PropertyGroup>
+
+</Project>
