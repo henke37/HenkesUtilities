@@ -146,7 +146,7 @@ namespace Henke37.Collections.Filtered {
 			CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(action,changedItems,startingIndex));
 		}
 
-		private struct DiffEntry : IComparable<DiffEntry> {
+		private struct DiffEntry : IComparable<DiffEntry>, IEquatable<DiffEntry> {
 			public EntryType EntryType;
 			public int Index;
 			public TItem Item;
@@ -157,7 +157,39 @@ namespace Henke37.Collections.Filtered {
 				Item = item;
 			}
 
-			int IComparable<DiffEntry>.CompareTo(DiffEntry other) => Index.CompareTo(other.Index);
+			public int CompareTo(DiffEntry other) { return Index.CompareTo(other.Index); }
+
+			public bool Equals(DiffEntry other) {
+				if(EntryType != other.EntryType) return false;
+				if(Index != other.Index) return false;
+				if((IEquatable <TItem>)Item != (IEquatable<TItem>)other.Item) return false;
+				return true;
+			}
+
+			public override bool Equals(object other) {
+				if(other is DiffEntry o2) return Equals(o2);
+				return false;
+			}
+
+			public static bool operator ==(DiffEntry left, DiffEntry right) {
+				if(ReferenceEquals(left, null)) {
+					return ReferenceEquals(right, null);
+				}
+				return left.Equals(right);
+			}
+			public static bool operator >(DiffEntry left, DiffEntry right) {
+				return left.CompareTo(right) > 0;
+			}
+			public static bool operator <(DiffEntry left, DiffEntry right) {
+				return left.CompareTo(right) < 0;
+			}
+			public static bool operator !=(DiffEntry left, DiffEntry right) {
+				return !(left == right);
+			}
+
+			public override int GetHashCode() {
+				return Index.GetHashCode() ^ EntryType.GetHashCode() ^ Item.GetHashCode();
+			}
 		}
 
 		private enum EntryType {
