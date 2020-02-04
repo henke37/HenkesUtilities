@@ -147,9 +147,9 @@ namespace Henke37.Collections.Filtered {
 		}
 
 		private struct DiffEntry : IComparable<DiffEntry>, IEquatable<DiffEntry> {
-			public EntryType EntryType;
-			public int Index;
-			public TItem Item;
+			public readonly EntryType EntryType;
+			public readonly int Index;
+			public readonly TItem Item;
 
 			public DiffEntry(EntryType type, int itemIndex, TItem item) {
 				EntryType = type;
@@ -172,9 +172,6 @@ namespace Henke37.Collections.Filtered {
 			}
 
 			public static bool operator ==(DiffEntry left, DiffEntry right) {
-				if(ReferenceEquals(left, null)) {
-					return ReferenceEquals(right, null);
-				}
 				return left.Equals(right);
 			}
 			public static bool operator >(DiffEntry left, DiffEntry right) {
