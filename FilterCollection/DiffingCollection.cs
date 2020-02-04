@@ -84,13 +84,69 @@ namespace Henke37.Collections.Filtered {
 
 
 			//find adds
+
+			//dispatch events
+			{
+				var deltaItems = new List<DiffEntry>();
+				EntryType runType = EntryType.Invalid;
+				int indexOffset = 0;
+
+				void DispatchPendingEntries() {
+					if(deltaItems.Count == 0) return;
+
+					switch(runType) {
+						case EntryType.Invalid:
+							throw new Exception();
+						case EntryType.Delete: {
+							DiffEntry firstDeletedItem = deltaItems[0];
+							IList removedItems = ElementsInEntries(deltaItems);
+							DispatchEvent(NotifyCollectionChangedAction.Remove, removedItems, firstDeletedItem.Index + indexOffset);
+							indexOffset -= deltaItems.Count;
+							break;
+						}
+
+						case EntryType.Add: {
+							DiffEntry firstAddedItem = deltaItems[0];
+							IList addedItems = ElementsInEntries(deltaItems);
+							DispatchEvent(NotifyCollectionChangedAction.Add, addedItems, firstAddedItem.Index + indexOffset);
+							indexOffset += deltaItems.Count;
+							break;
+						}
+					}
+				}
+
+				
+				foreach(var entry in diffEntries) {
+
+					if(entry.EntryType==runType) {
+						deltaItems.Add(entry);
+						continue;
+					}
+
+					DispatchPendingEntries();
+
+					runType = entry.EntryType;
+					deltaItems.Clear();
+					deltaItems.Add(entry);					
+				}
+
+				DispatchPendingEntries();
+			}
+		}
+
+		private static IList ElementsInEntries(List<DiffEntry> deltaItems) {
+			var l=new List<TItem>();
+			foreach(var entry in deltaItems) {
+				l.Add(entry.Item);
+			}
+			return l;
 		}
 
 		private void DispatchEvent(NotifyCollectionChangedAction action, IList changedItems, int startingIndex) {
 			CollectionChanged.Invoke(this, new NotifyCollectionChangedEventArgs(action,changedItems,startingIndex));
 		}
 
-		private struct DiffEntry {
+		private struct DiffEntry : IComparable<DiffEntry> {
 			public EntryType EntryType;
 			public int Index;
 			public TItem Item;
@@ -100,9 +156,12 @@ namespace Henke37.Collections.Filtered {
 				Index = itemIndex;
 				Item = item;
 			}
+
+			int IComparable<DiffEntry>.CompareTo(DiffEntry other) => Index.CompareTo(other.Index);
 		}
 
 		private enum EntryType {
+			Invalid,
 			Add,
 			Delete
 		}
