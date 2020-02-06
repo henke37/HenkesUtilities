@@ -69,7 +69,9 @@ namespace Henke37.Collections.Filtered {
 							}
 						}
 
-						diffEntries.Add(new DiffEntry(EntryType.Add, oldItemIndex, (TItem)oldItem));
+						diffEntries.Add(new DiffEntry(EntryType.Delete, oldItemIndex, (TItem)oldItem));
+
+						++oldItemIndex;
 					}
 				}
 
@@ -77,13 +79,43 @@ namespace Henke37.Collections.Filtered {
 
 				if(trailingRemovedCount > 0) {
 					for(; oldItemIndex < oldItems.Count; ++oldItemIndex) {
-						diffEntries.Add(new DiffEntry(EntryType.Add, oldItemIndex, oldItems[oldItemIndex]));
+						diffEntries.Add(new DiffEntry(EntryType.Delete, oldItemIndex, oldItems[oldItemIndex]));
 					}
 				}
 			}
 
 
 			//find adds
+			{
+				var newItemItr = realCollection.GetEnumerator();
+				int oldItemIndex = 0;
+
+				if(oldItems.Count > 0) {
+					//look at each new item, checking if there is a matching old item
+					while(newItemItr.MoveNext()) {
+						IEquatable<TItem> oldItem = oldItems[oldItemIndex];
+						IEquatable<TItem> newItem = newItemItr.Current;
+
+						if(oldItem == newItem) {
+							if(oldItemIndex+1 < oldItems.Count) {
+								++oldItemIndex;
+								continue;
+							} else {
+								break;
+							}
+
+						}
+
+						diffEntries.Add(new DiffEntry(EntryType.Add, oldItemIndex, (TItem)newItem));
+					}
+				}
+
+				while(newItemItr.MoveNext()) {
+					TItem newItem = newItemItr.Current;
+
+					diffEntries.Add(new DiffEntry(EntryType.Add, oldItemIndex, newItem));
+				}
+			}
 
 			//dispatch events
 			{
@@ -100,15 +132,19 @@ namespace Henke37.Collections.Filtered {
 						case EntryType.Delete: {
 							DiffEntry firstDeletedItem = deltaItems[0];
 							IList removedItems = ElementsInEntries(deltaItems);
-							DispatchEvent(NotifyCollectionChangedAction.Remove, removedItems, firstDeletedItem.Index + indexOffset);
-							indexOffset -= deltaItems.Count;
+							int startingIndex = firstDeletedItem.Index + indexOffset;
+							oldItems.RemoveRange(startingIndex, deltaItems.Count);
+							DispatchEvent(NotifyCollectionChangedAction.Remove, removedItems, startingIndex);
+							//indexOffset -= deltaItems.Count-1;
 							break;
 						}
 
 						case EntryType.Add: {
 							DiffEntry firstAddedItem = deltaItems[0];
 							IList addedItems = ElementsInEntries(deltaItems);
-							DispatchEvent(NotifyCollectionChangedAction.Add, addedItems, firstAddedItem.Index + indexOffset);
+							int startingIndex = firstAddedItem.Index + indexOffset;
+							oldItems.InsertRange(startingIndex, (IList<TItem>)addedItems);
+							DispatchEvent(NotifyCollectionChangedAction.Add, addedItems, startingIndex);
 							indexOffset += deltaItems.Count;
 							break;
 						}
@@ -157,7 +193,11 @@ namespace Henke37.Collections.Filtered {
 				Item = item;
 			}
 
-			public int CompareTo(DiffEntry other) { return Index.CompareTo(other.Index); }
+			public int CompareTo(DiffEntry other) {
+				int res= Index.CompareTo(other.Index);
+				if(res != 0) return res;
+				return EntryType.CompareTo(other.EntryType);
+			}
 
 			public bool Equals(DiffEntry other) {
 				if(EntryType != other.EntryType) return false;
@@ -186,6 +226,10 @@ namespace Henke37.Collections.Filtered {
 
 			public override int GetHashCode() {
 				return Index.GetHashCode() ^ EntryType.GetHashCode() ^ Item.GetHashCode();
+			}
+
+			public override string ToString() {
+				return $"{EntryType} {Index} {Item}";
 			}
 		}
 
