@@ -133,6 +133,8 @@ namespace Henke37.Collections.Filtered {
 				}
 			}
 
+			diffEntries.Sort();
+
 			//dispatch events
 			{
 				var deltaItems = new List<DiffEntry>();
