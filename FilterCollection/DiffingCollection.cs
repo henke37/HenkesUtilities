@@ -7,24 +7,24 @@ namespace Henke37.Collections.Filtered {
 	public class DiffingCollection<TItem> : INotifyCollectionChanged, IReadOnlyCollection<TItem> where TItem : IEquatable<TItem> {
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-		private IReadOnlyCollection<TItem> realCollection;
+		private IReadOnlyCollection<TItem> _realCollection;
 
 		private List<TItem> oldItems;
 
-		public int Count => realCollection.Count;
+		public int Count => _realCollection.Count;
 
-		public IEnumerator<TItem> GetEnumerator() => realCollection.GetEnumerator();
+		public IEnumerator<TItem> GetEnumerator() => _realCollection.GetEnumerator();
 
 		IEnumerator IEnumerable.GetEnumerator() {
-			return realCollection.GetEnumerator();
+			return _realCollection.GetEnumerator();
 		}
 
 		public DiffingCollection(IReadOnlyCollection<TItem> real) {
-			realCollection = real ?? throw new ArgumentNullException(nameof(real));
+			_realCollection = real ?? throw new ArgumentNullException(nameof(real));
 
 			oldItems = new List<TItem>(real);
 
-			var ch = (INotifyCollectionChanged)realCollection;
+			var ch = (INotifyCollectionChanged)_realCollection;
 			ch.CollectionChanged += realCollectionChanged;
 		}
 
@@ -45,12 +45,28 @@ namespace Henke37.Collections.Filtered {
 			throw new NotImplementedException();
 		}
 
+		public IReadOnlyCollection<TItem> RealCollection {
+			get => _realCollection;
+			set {
+				if(value is null) throw new ArgumentNullException(nameof(value));
+
+				var oldch = (INotifyCollectionChanged)_realCollection;
+				var newch = (INotifyCollectionChanged)value;
+
+				oldch.CollectionChanged -= realCollectionChanged;
+				newch.CollectionChanged += realCollectionChanged;
+
+				_realCollection = value;
+				Diff();
+			}
+		}
+
 		private void Diff() {
 			var diffEntries = new List<DiffEntry>();
 
 			//find deletes
 			{
-				var newItemItr = realCollection.GetEnumerator();
+				var newItemItr = _realCollection.GetEnumerator();
 				int oldItemIndex = 0;
 
 
@@ -87,7 +103,7 @@ namespace Henke37.Collections.Filtered {
 
 			//find adds
 			{
-				var newItemItr = realCollection.GetEnumerator();
+				var newItemItr = _realCollection.GetEnumerator();
 				int oldItemIndex = 0;
 
 				if(oldItems.Count > 0) {
