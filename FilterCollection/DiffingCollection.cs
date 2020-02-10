@@ -24,8 +24,9 @@ namespace Henke37.Collections.Filtered {
 
 			oldItems = new List<TItem>(real);
 
-			var ch = (INotifyCollectionChanged)_realCollection;
-			ch.CollectionChanged += realCollectionChanged;
+			if(_realCollection is INotifyCollectionChanged ch) {
+				ch.CollectionChanged += realCollectionChanged;
+			}
 		}
 
 		private void realCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
@@ -50,11 +51,12 @@ namespace Henke37.Collections.Filtered {
 			set {
 				if(value is null) throw new ArgumentNullException(nameof(value));
 
-				var oldch = (INotifyCollectionChanged)_realCollection;
-				var newch = (INotifyCollectionChanged)value;
-
-				oldch.CollectionChanged -= realCollectionChanged;
-				newch.CollectionChanged += realCollectionChanged;
+				if(_realCollection is INotifyCollectionChanged oldch) {
+					oldch.CollectionChanged -= realCollectionChanged;
+				}
+				if(value is INotifyCollectionChanged newch) {
+					newch.CollectionChanged += realCollectionChanged;
+				}
 
 				_realCollection = value;
 				Diff();
